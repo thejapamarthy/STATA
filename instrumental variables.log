@@ -1,0 +1,348 @@
+------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\NEW USER\ps2.log
+  log type:  text
+ opened on:   4 Nov 2020, 16:34:21
+
+. 
+. sysuse auto
+(1978 Automobile Data)
+
+. ivreg price (mpg = displacement),first
+
+First-stage regressions
+-----------------------
+
+      Source |       SS           df       MS      Number of obs   =        74
+-------------+----------------------------------   F(1, 72)        =     71.41
+       Model |  1216.67534         1  1216.67534   Prob > F        =    0.0000
+    Residual |  1226.78412        72  17.0386683   R-squared       =    0.4979
+-------------+----------------------------------   Adj R-squared   =    0.4910
+       Total |  2443.45946        73  33.4720474   Root MSE        =    4.1278
+
+------------------------------------------------------------------------------
+         mpg |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+displacement |  -.0444536   .0052606    -8.45   0.000    -.0549405   -.0339668
+       _cons |   30.06788   1.143462    26.30   0.000     27.78843    32.34733
+------------------------------------------------------------------------------
+
+
+Instrumental variables (2SLS) regression
+
+      Source |       SS           df       MS      Number of obs   =        74
+-------------+----------------------------------   F(1, 72)        =     21.13
+       Model |   105028215         1   105028215   Prob > F        =    0.0000
+    Residual |   530037181        72  7361627.51   R-squared       =    0.1654
+-------------+----------------------------------   Adj R-squared   =    0.1538
+       Total |   635065396        73  8699525.97   Root MSE        =    2713.2
+
+------------------------------------------------------------------------------
+       price |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         mpg |  -357.5834   77.78566    -4.60   0.000    -512.6463   -202.5205
+       _cons |   13780.82   1686.382     8.17   0.000     10419.08    17142.56
+------------------------------------------------------------------------------
+Instrumented:  mpg
+Instruments:   displacement
+------------------------------------------------------------------------------
+
+. use "ps2 pubtwins (1).dta", clear
+
+. describe
+
+Contains data from ps2 pubtwins (1).dta
+  obs:           680                          
+ vars:            39                          26 Apr 2009 15:04
+------------------------------------------------------------------------------------------------------------------
+              storage   display    value
+variable name   type    format     label      variable label
+------------------------------------------------------------------------------------------------------------------
+first           byte    %9.0g                 (mean) first
+educ            float   %9.0g                 Twin1 Educ
+educt           float   %9.0g                 Twin1 Report of Twin2 Educ
+hrwage          float   %9.0g                 (mean) hrwage
+lwage           float   %9.0g                 (mean) lwage
+age             float   %9.0g                 (mean) age
+white           float   %9.0g                 (mean) white
+female          float   %9.0g                 (mean) female
+selfemp         float   %9.0g                 (mean) selfemp
+uncov           float   %9.0g                 (mean) uncov
+married         float   %9.0g                 (mean) evmaried
+tenure          float   %9.0g                 (mean) tenure
+nsibs           float   %9.0g                 (mean) nsibs
+daded           float   %9.0g                 (mean) daded
+momed           float   %9.0g                 (mean) momed
+educt_t         float   %9.0g                 Twin2 Report of Twin1 Educ
+educ_t          float   %9.0g                 Twin2 Educ
+lwage_t         float   %9.0g                 Sibling's Wage
+age2            float   %9.0g                 Age, squared
+twoplus         byte    %9.0g                 Interviewed more than once
+aeduct          float   %9.0g                 Twin-Reported Avg. Educ
+dlwage          float   %9.0g                 1st Diff. Log Wage
+deduc           float   %9.0g                 Own-Report 1st Diff in Educ
+deduct          float   %9.0g                 Twin-Report 1st Diff in Educ
+dceduc          float   %9.0g                 Twin1-Report 1st Diff in Educ
+dceduct         float   %9.0g                 Twin2-Report 1st Diff in Educ
+cseduc          float   %9.0g                 Twin1 Report of Average
+cseduct         float   %9.0g                 Twin2 Report of Average
+dcsumint        float   %9.0g                 Twin1 Report of Avg. x Twin1 Re
+dcsuminz        float   %9.0g                 Twin2 Report of Avg. x Twin2 Re
+duncov          float   %9.0g                 1st diff in Union
+dmaried         float   %9.0g                 1st Diff in Ever-married
+dtenure         float   %9.0g                 1st Diff in Job Tenure
+pedhs           byte    %9.0g                 Parents Ed = HS
+pedcl           byte    %9.0g                 Parents Ed = HS+
+dcpedhs         float   %9.0g                 Parents Ed = HS x Twin1 Diff in
+dcpedhst        float   %9.0g                 Parents Ed = HS x Twin2 Diff in
+dcpedcl         float   %9.0g                 Parents Ed = HS+ x Twin1 Diff i
+dcpedclt        float   %9.0g                 Parents Ed = HS+ x Twin2 Diff i
+------------------------------------------------------------------------------------------------------------------
+Sorted by: 
+
+. summ
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+       first |        340           1           0          1          1
+        educ |        680    14.02892    2.073351          8         18
+       educt |        680    13.95551    2.102178          8         18
+      hrwage |        680    14.43777    13.01629   2.059872   133.3333
+       lwage |        680     2.44096    .6208546   .7226437   4.892852
+-------------+---------------------------------------------------------
+         age |        680    38.07524    11.55581         18   70.80048
+       white |        680    .9191176    .2701428          0          1
+      female |        680     .595098    .4905677          0          1
+     selfemp |        680    .1230392    .3188692          0          1
+       uncov |        680    .2262255    .4140276          0          1
+-------------+---------------------------------------------------------
+     married |        680    .6392157    .4787051          0          1
+      tenure |        672    8.337991    8.713086       .007         55
+       nsibs |        465    3.564516    2.212603          1         15
+       daded |        664    12.09613    3.044445          0         18
+       momed |        665    12.09148     2.49102          0         18
+-------------+---------------------------------------------------------
+     educt_t |        680    13.95551    2.102178          8         18
+      educ_t |        680    14.02892    2.073351          8         18
+     lwage_t |        680     2.44096    .6208546   .7226437   4.892852
+        age2 |        680    1583.064    962.8419        324   5012.708
+     twoplus |        680    .2441176     .429879          0          1
+-------------+---------------------------------------------------------
+      aeduct |        680    13.99222    2.048018       8.75         18
+      dlwage |        680           0    .5151618  -2.109747   2.109747
+       deduc |        680           0    1.472321         -6          6
+      deduct |        680           0    1.520929         -6          6
+      dceduc |        680    .0734069    1.445236         -6          6
+-------------+---------------------------------------------------------
+     dceduct |        680   -.0734069    1.445236         -6          6
+      cseduc |        680    13.99222    1.958773          8         18
+     cseduct |        680    13.99222    1.958773          8         18
+    dcsumint |        680    .9670292    20.99823        -90         90
+    dcsuminz |        680   -.9670292    20.99823        -90         90
+-------------+---------------------------------------------------------
+      duncov |        680           0    .4737419         -1          1
+     dmaried |        680           0    .3618169         -1          1
+     dtenure |        666           0    7.685646        -30         30
+       pedhs |        670    .4358209    .4962344          0          1
+       pedcl |        670    .2925373    .4552676          0          1
+-------------+---------------------------------------------------------
+     dcpedhs |        670    .0400498    .9315627         -5          6
+    dcpedhst |        670   -.0400498    .9315627         -6          5
+     dcpedcl |        670     .009204    .6906185         -4          4
+    dcpedclt |        670    -.009204    .6906185         -4          4
+
+. ssc install outreg2
+checking outreg2 consistency and verifying not already installed...
+all files already exist and are up to date.
+
+. /* 1a */
+. reg lwage educ, robust 
+
+Linear regression                               Number of obs     =        680
+                                                F(1, 678)         =      79.00
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.1164
+                                                Root MSE          =     .58403
+
+------------------------------------------------------------------------------
+             |               Robust
+       lwage |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        educ |   .1021665   .0114947     8.89   0.000      .079597    .1247359
+       _cons |   1.007675   .1577872     6.39   0.000     .6978649    1.317485
+------------------------------------------------------------------------------
+
+. outreg2 using table1, excel ctitle(Ques 1a,ln wg-OLS) replace 
+table1.xml
+dir : seeout
+
+.   /* this starts to create a "table1.xml".  This command will only work if you type "ssc install outreg2" on the
+>  command line */
+.   
+. gr two scatter lwage educ, ///
+>   title("Log Wage vs. Education") xtitle("Years of Education") ytitle("Ln(Wage)")
+
+. gr export "ps2q1a.png", replace as(png)
+(file ps2q1a.png written in PNG format)
+
+. 
+. /* 1b */
+. reg lwage educ age age2 white female, robust
+
+Linear regression                               Number of obs     =        680
+                                                F(5, 674)         =      59.62
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.3388
+                                                Root MSE          =     .50673
+
+------------------------------------------------------------------------------
+             |               Robust
+       lwage |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        educ |   .1099923   .0104776    10.50   0.000     .0894197    .1305649
+         age |   .1039422   .0119901     8.67   0.000     .0803997    .1274847
+        age2 |  -.0010635   .0001472    -7.23   0.000    -.0013525   -.0007745
+       white |  -.1000952   .0682216    -1.47   0.143    -.2340475    .0338571
+      female |   -.317994   .0399229    -7.97   0.000    -.3963823   -.2396056
+       _cons |  -1.094912   .2923846    -3.74   0.000    -1.669007    -.520818
+------------------------------------------------------------------------------
+
+. outreg2 using table1, excel ctitle(Ques 1b,ln wg-OLS) append 
+table1.xml
+dir : seeout
+
+.   /* Notice that this "appends" a second column */
+. 
+. /* 1c: educ is the dependent variable, so say so in the "ctitle" of outreg2 */
+. reg educ age age2 female white, robust
+
+Linear regression                               Number of obs     =        680
+                                                F(4, 675)         =       6.61
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0370
+                                                Root MSE          =     2.0406
+
+------------------------------------------------------------------------------
+             |               Robust
+        educ |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         age |  -.0148901   .0418971    -0.36   0.722    -.0971544    .0673742
+        age2 |  -.0001876   .0005154    -0.36   0.716    -.0011995    .0008244
+      female |  -.3902216   .1605357    -2.43   0.015     -.705431   -.0750123
+       white |  -.3429225   .2812535    -1.22   0.223    -.8951594    .2093143
+       _cons |   15.44022   .8245419    18.73   0.000     13.82124    17.05919
+------------------------------------------------------------------------------
+
+. outreg2 using table1, excel ctitle(Ques 1c, educ-OLS) append
+table1.xml
+dir : seeout
+
+. /* Notice this appends a column*/
+. 
+. /* 2a */
+. gen pairno = round(680/2,1)
+
+. browse pairno
+
+. 
+. /* 2b */
+. reg lwage educ age age2 white female, cluster(pairno)robust
+
+Linear regression                               Number of obs     =        680
+                                                F(0, 0)           =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.3388
+                                                Root MSE          =     .50673
+
+                                 (Std. Err. adjusted for 1 clusters in pairno)
+------------------------------------------------------------------------------
+             |               Robust
+       lwage |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        educ |   .1099923          .        .       .            .           .
+         age |   .1039422          .        .       .            .           .
+        age2 |  -.0010635          .        .       .            .           .
+       white |  -.1000952          .        .       .            .           .
+      female |   -.317994          .        .       .            .           .
+       _cons |  -1.094912          .        .       .            .           .
+------------------------------------------------------------------------------
+
+. outreg2 using table2, excel ctitle(Ques 2b, lwage-OLS) replace
+table2.xml
+dir : seeout
+
+. /* 3a */
+. reg educt_t educ
+
+      Source |       SS           df       MS      Number of obs   =       680
+-------------+----------------------------------   F(1, 678)       =   3992.29
+       Model |   2564.9984         1   2564.9984   Prob > F        =    0.0000
+    Residual |  435.607313       678  .642488662   R-squared       =    0.8548
+-------------+----------------------------------   Adj R-squared   =    0.8546
+       Total |  3000.60571       679  4.41915421   Root MSE        =    .80155
+
+------------------------------------------------------------------------------
+     educt_t |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        educ |   .9374233   .0148363    63.18   0.000     .9082927    .9665539
+       _cons |   .8044765   .2103945     3.82   0.000     .3913735     1.21758
+------------------------------------------------------------------------------
+
+. 
+. /* 3b: use IV to get rid of measurement error */
+. ivreg lwage (educ = educt_t)
+
+Instrumental variables (2SLS) regression
+
+      Source |       SS           df       MS      Number of obs   =       680
+-------------+----------------------------------   F(1, 678)       =     81.19
+       Model |  30.4374603         1  30.4374603   Prob > F        =    0.0000
+    Residual |  231.290205       678  .341135996   R-squared       =    0.1163
+-------------+----------------------------------   Adj R-squared   =    0.1150
+       Total |  261.727666       679   .38546048   Root MSE        =    .58407
+
+------------------------------------------------------------------------------
+       lwage |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        educ |   .1053573   .0116928     9.01   0.000     .0823989    .1283156
+       _cons |   .9629115   .1655588     5.82   0.000     .6378419    1.287981
+------------------------------------------------------------------------------
+Instrumented:  educ
+Instruments:   educt_t
+------------------------------------------------------------------------------
+
+. outreg2 using table3a, excel ctitle(Ques 3a, lwage-IV) replace
+table3a.xml
+dir : seeout
+
+. ivreg lwage (educ = educt_t) age age2 white female
+
+Instrumental variables (2SLS) regression
+
+      Source |       SS           df       MS      Number of obs   =       680
+-------------+----------------------------------   F(5, 674)       =     67.58
+       Model |    88.55968         5   17.711936   Prob > F        =    0.0000
+    Residual |  173.167986       674  .256925795   R-squared       =    0.3384
+-------------+----------------------------------   Adj R-squared   =    0.3335
+       Total |  261.727666       679   .38546048   Root MSE        =    .50688
+
+------------------------------------------------------------------------------
+       lwage |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        educ |   .1160166   .0103696    11.19   0.000      .095656    .1363771
+         age |   .1040319   .0105022     9.91   0.000      .083411    .1246528
+        age2 |  -.0010624   .0001262    -8.42   0.000    -.0013101   -.0008147
+       white |  -.0980293   .0722449    -1.36   0.175    -.2398815    .0438228
+      female |  -.3156432   .0400738    -7.88   0.000    -.3943277   -.2369586
+       _cons |  -1.187928   .2685695    -4.42   0.000    -1.715262   -.6605947
+------------------------------------------------------------------------------
+Instrumented:  educ
+Instruments:   age age2 white female educt_t
+------------------------------------------------------------------------------
+
+. outreg2 using table3b, excel ctitle(Ques 3b, lwage-IV) replace
+table3b.xml
+dir : seeout
+
+. 
+. capture log close
